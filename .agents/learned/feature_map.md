@@ -7,10 +7,10 @@
 | `onboarding` | SplashScreen, LanguageScreen, GoalScreen, BedtimeScreen, SleepHoursScreen, NotificationScreen | Cá nhân hóa trải nghiệm, thu thập preferences | ✅ Done |
 | `home` | HomeScreen | Lời chào, Mood Chips, Hero Section, Top 5 Ranked, Relaxing/Nature sections | ✅ Done |
 | `shell` | MainShell | Tab navigation via IndexedStack + FloatingNavBar | ✅ Done |
-| `sounds` | SoundsScreen | Grid âm thanh, Active Glow, Volume Ring | ⬜ Not started |
-| `player` | MiniPlayerBar, CurrentMixSheet | Play/Pause/Stop, mix management, volume per sound | ⬜ Not started |
+| `sounds` | SoundsScreen | Grid âm thanh, Active Glow, Volume Ring | ✅ Done |
+| `player` | MiniPlayerBar, CurrentMixScreen | Play/Pause/Stop, mix management, volume per sound | 🔧 In Progress |
 | `breathwork` | BreathworkScreen | Visualizer, instructions (Inhale/Hold/Exhale), timer | ⬜ Not started |
-| `sleep_timer` | SleepTimerModal | Hẹn giờ tắt âm thanh (10/15/20/25 phút) | ⬜ Not started |
+| `sleep_timer` | SleepTimerScreen | Scroll-wheel picker (HH:MM), ending sound, fade out, vibration | 🔧 In Progress |
 | `library` | LibraryScreen | Saved mixes, bookmarked content | ⬜ Not started |
 | `settings` | SettingsScreen, LanguageScreen | Notifications, language, support, about | ⬜ Not started |
 | `premium` | PremiumScreen | Paywall, features preview, 7-day trial CTA | ⬜ Not started |

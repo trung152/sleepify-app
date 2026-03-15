@@ -1,27 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/providers/active_sounds_provider.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/widgets/floating_nav_bar.dart';
 import '../../../home/presentation/screens/home_screen.dart';
+import '../../../sounds/presentation/screens/sounds_screen.dart';
+import '../../../sounds/presentation/widgets/mini_player_bar.dart';
+import '../../../sounds/presentation/screens/current_mix_screen.dart';
 
-/// Main app shell with floating navbar.
+/// Main app shell with floating navbar + global mini player.
 ///
 /// Manages tab navigation between Home, Sounds, Breathwork, Library, Settings.
-/// Each tab preserves its own state via IndexedStack.
-class MainShell extends StatefulWidget {
+/// MiniPlayerBar appears above navbar when sounds are active (any tab).
+class MainShell extends ConsumerStatefulWidget {
   const MainShell({super.key});
 
   @override
-  State<MainShell> createState() => _MainShellState();
+  ConsumerState<MainShell> createState() => _MainShellState();
 }
 
-class _MainShellState extends State<MainShell> {
+class _MainShellState extends ConsumerState<MainShell> {
   int _currentIndex = 0;
 
-  // Tab screens — placeholder screens for non-Home tabs
+  // Tab screens
   final List<Widget> _screens = const [
     HomeScreen(),
-    _PlaceholderScreen(title: 'Sounds', icon: Icons.graphic_eq),
+    SoundsScreen(),
     _PlaceholderScreen(title: 'Breathwork', icon: Icons.air),
     _PlaceholderScreen(title: 'Library', icon: Icons.bookmark),
     _PlaceholderScreen(title: 'Settings', icon: Icons.settings),
@@ -29,6 +34,9 @@ class _MainShellState extends State<MainShell> {
 
   @override
   Widget build(BuildContext context) {
+    final activeSoundsState = ref.watch(activeSoundsProvider);
+    final hasActive = activeSoundsState.hasActiveSounds;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Stack(
@@ -39,14 +47,36 @@ class _MainShellState extends State<MainShell> {
             children: _screens,
           ),
 
-          // ── Floating Navbar ──────────────────────────────
+          // ── Mini Player + Navbar (bottom) ─────────────────
           Positioned(
             left: 0,
             right: 0,
             bottom: 0,
-            child: FloatingNavBar(
-              currentIndex: _currentIndex,
-              onTap: (index) => setState(() => _currentIndex = index),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Mini player (conditional)
+                if (hasActive)
+                  MiniPlayerBar(
+                    count: activeSoundsState.count,
+                    labels: activeSoundsState.labels,
+                    isPlaying: activeSoundsState.isPlaying,
+                    onPlayPause: () {
+                      ref
+                          .read(activeSoundsProvider.notifier)
+                          .togglePlayback();
+                    },
+                    onExpand: () {
+                      CurrentMixScreen.show(context);
+                    },
+                  ),
+
+                // Navbar (always visible)
+                FloatingNavBar(
+                  currentIndex: _currentIndex,
+                  onTap: (index) => setState(() => _currentIndex = index),
+                ),
+              ],
             ),
           ),
         ],

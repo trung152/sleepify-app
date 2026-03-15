@@ -1,10 +1,10 @@
 # Sleepify — Current Context
 
-> Cập nhật: 2026-03-15T12:32 (Session 2)
+> Cập nhật: 2026-03-16T00:52 (Session 3)
 
 ## Phase hiện tại
 
-**Phase 2: UI Screens — Onboarding + Home + Navigation**
+**Phase 3: Audio Features — Sounds, Player, Sleep Timer**
 
 ## Tiến độ
 
@@ -16,7 +16,8 @@
 - `onboarding_provider` — lưu trạng thái onboarding
 - `AppColors` — Midnight Navy dark theme + Neon Cyan accent
 - `AppRouter` — go_router setup cho toàn bộ onboarding + home flow
-- Stitch MCP project setup (project ID: `5040869211547201931`)
+- Stitch MCP project setup (project ID: `15275561946752396567`)
+- `.gemini/` → `.agents/` migration (skills, workflows, learned, rules)
 
 #### Onboarding (6 screens)
 - **SplashScreen** — logo, loading bar, auto-navigate
@@ -38,17 +39,35 @@
 
 #### Navigation
 - **FloatingNavBar** — minimal edge-to-edge, blur backdrop, 5 tabs
-- **MainShell** — IndexedStack for tab state preservation
-- 4 placeholder screens (Sounds, Breathwork, Library, Settings)
+- **MainShell** — IndexedStack for tab state preservation + MiniPlayerBar integration
+
+#### Sounds & Player (Session 3 — NEW)
+- **SoundsScreen** — Grid layout, SoundCircle widgets, active glow + volume ring
+- **MiniPlayerBar** — Compact player bar, play/pause, tap-to-expand
+- **CurrentMixScreen** — Full screen player (slide-up from MiniPlayerBar)
+  - Sound list with volume sliders, icon circles, percentage labels
+  - CLEAR ALL MIX button, bookmark/save header
+  - Controls bar: Timer / Play-Pause (cyan glow) / Add Sound
+- **CurrentMixSheet** — DraggableScrollableSheet (also created, user's backup)
+- **SleepTimerScreen** — Full screen (slide-up from CurrentMixScreen timer button)
+  - Scroll-wheel time picker (HOURS : MINUTES), large numbers (48px)
+  - Ending Sound setting (default: None, dropdown style)
+  - Fade Out stepper (1-60 Sec, subtitle "Length sounds will fade out")
+  - Vibration toggle with description
+  - START TIMER button with cyan glow
+
+### 🔧 Đang làm (In Progress)
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Player feature | 🔧 | UI done, cần `just_audio` integration, actual audio playback |
+| Sleep Timer | 🔧 | UI done, cần actual timer logic (countdown, fade out, device lock) |
 
 ### ⬜ Chưa hoàn thành
 
 | Feature | Priority | Notes |
 |---------|----------|-------|
-| Sounds Screen | HIGH | Grid with active glow + volume ring |
-| Player feature | HIGH | `just_audio`, MiniPlayerBar, CurrentMixSheet |
 | Breathwork Screen | MEDIUM | Visualizer, breathing patterns |
-| Sleep Timer | MEDIUM | Auto-stop modal |
 | Library Screen | LOW | Saved mixes |
 | Settings Screen | LOW | Settings items |
 | Premium Screen | LOW | UI-only paywall |
@@ -60,15 +79,25 @@
 - **Sound data**: Static local assets, `Sound` model class (not @freezed yet)
 - **Navbar style**: Minimal edge-to-edge (was capsule, user preferred simpler)
 - **Top 5 layout**: Vertical ranked list (Stitch-style tiles), not horizontal cards
+- **CurrentMixScreen**: Full screen (PageRouteBuilder slide-up), NOT DraggableScrollableSheet
+- **SleepTimerScreen**: Full screen (PageRouteBuilder slide-up), NOT dialog/modal
+- **Config dir**: `.agents/` (migrated from `.gemini/`)
+
+## Session 3 — Key Decisions
+
+1. **CurrentMixSheet → CurrentMixScreen**: User preferred full-screen player over bottom sheet, slide-up animation via PageRouteBuilder
+2. **SleepTimerModal → SleepTimerScreen**: User preferred full-screen over centered dialog, with scroll-wheel time picker from Stitch design
+3. **Fade Out unit**: Changed from minutes to seconds (matching Stitch design)
+4. **Ending Sound default**: "None" instead of "Rain Forest"
 
 ## Next Session — Gợi ý
 
-1. **Sounds Screen** — grid layout với active glow, volume ring
-2. **Player feature** — just_audio integration, MiniPlayerBar
-3. **CurrentMixSheet** — bottom sheet quản lý mix
-4. **Sleep Timer** — modal hẹn giờ tắt
+1. **`just_audio` integration** — actual audio playback cho SoundsScreen + CurrentMixScreen
+2. **Sleep Timer logic** — countdown timer, fade out audio, device lock
+3. **Breathwork Screen** — breathing visualizer, patterns
+4. **Library Screen** — saved mixes, bookmarks
 
 ## Blockers / Issues
 
-- Không có blockers hiện tại
-- `dart analyze` → 0 errors ✅
+- Warning: `_SettingTile.onTap` parameter unused (minor, can keep for future use)
+- Cần integrate `just_audio` + `audio_service` cho actual playback

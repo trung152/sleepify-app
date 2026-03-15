@@ -1,6 +1,6 @@
 ---
 name: stitch-design
-description: "Unified entry point for Stitch design work. Handles prompt enhancement, design system synthesis (.stitch/DESIGN.md), and high-fidelity screen generation/editing via Stitch MCP — optimized for Sleepify's dark mobile UI."
+description: "Unified entry point for Stitch design work. Handles prompt enhancement, design system synthesis (.stitch/DESIGN.md), and high-fidelity screen generation/editing via Stitch MCP — optimized for Sleepify's dark mobile UI. MUST READ before any Stitch MCP tool call, screen generation, design editing, or Stitch-to-Flutter code conversion."
 ---
 
 # Stitch Design Expert — Sleepify

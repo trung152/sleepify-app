@@ -42,9 +42,7 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
   }
 
   void _onContinue() {
-    ref
-        .read(localeProvider.notifier)
-        .setLocale(Locale(_selectedCode));
+    ref.read(localeProvider.notifier).setLocale(Locale(_selectedCode));
     context.go('/onboarding/goal');
   }
 
@@ -58,10 +56,7 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              const Color(0xFF0D1B2A),
-              AppColors.background,
-            ],
+            colors: [const Color(0xFF0D1B2A), AppColors.background],
           ),
         ),
         child: SafeArea(
@@ -71,27 +66,6 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 16),
-
-                // Back button
-                GestureDetector(
-                  onTap: () => context.go('/splash'),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: AppColors.surface.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Icon(
-                      Icons.arrow_back_ios_new,
-                      color: AppColors.textPrimary,
-                      size: 18,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
                 // Title
                 Text(
                   'Select Language',
@@ -191,10 +165,7 @@ class _LanguageTile extends StatelessWidget {
         child: Row(
           children: [
             // Flag
-            Text(
-              language.flag,
-              style: const TextStyle(fontSize: 28),
-            ),
+            Text(language.flag, style: const TextStyle(fontSize: 28)),
             const SizedBox(width: 16),
 
             // Name

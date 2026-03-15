@@ -21,8 +21,8 @@ Chạy khi kết thúc buổi làm việc. Tự động cập nhật tài liệu
 
 2. **Run `/update-doc`** — Cập nhật tài liệu liên quan:
    - `docs/screen_spec.md` — nếu có screen mới/sửa
-   - `.gemini/learned/feature_map.md` — nếu có feature mới/sửa
-   - `.gemini/rules/project_specific.md` — nếu thêm package
+   - `.agents/learned/feature_map.md` — nếu có feature mới/sửa
+   - `.agents/rules/project_specific.md` — nếu thêm package
 
 3. **Run `/save-context`** — Lưu trạng thái vào `docs/context.md`:
    - Phase hiện tại
@@ -44,14 +44,13 @@ Chạy khi kết thúc buổi làm việc. Tự động cập nhật tài liệu
    ⚠️ Issues: [nếu có]
    ```
 
-6. **Nhắc user commit** (user tự commit):
-   ```
-   💡 Gợi ý commit:
-   git add -A && git commit -m "feat/fix/chore: [mô tả]"
+6. **Commit** — Tự chạy commit (PowerShell syntax):
+   ```powershell
+   git add -A; git commit -m "feat/fix/chore: [mô tả ngắn gọn từ session summary]"
    ```
 
 ## Notes
-- Workflow này **không tự commit** — user tự quyết định commit message
+- **PowerShell**: Dùng `;` để nối lệnh (KHÔNG dùng `&&`)
 - Luôn chạy `dart analyze` trước khi kết thúc để đảm bảo không để lại lỗi
 - Nếu có test failures, báo cho user biết trước khi kết thúc
 - Context file (`docs/context.md`) là nguồn chính để session sau đọc lại

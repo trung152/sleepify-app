@@ -21,3 +21,10 @@ When converting a Stitch design to Flutter code:
 - The screenshot image is useful only for visual confirmation of ambiguous details
 - Stitch project ID for Sleepify: `15275561946752396567`
 - Design theme uses: dark mode, Manrope font, full roundness, custom color `#06e0f9`
+
+## PowerShell (Windows)
+
+- **Nối lệnh**: Dùng `;` thay vì `&&` (PowerShell không hỗ trợ `&&`)
+  - ❌ `git add -A && git commit -m "msg"` → **lỗi**
+  - ✅ `git add -A; git commit -m "msg"` → **đúng**
+- **Download file**: Dùng `Invoke-WebRequest -Uri "..." -OutFile "..."` thay vì `curl -L -o`

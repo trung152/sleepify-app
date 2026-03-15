@@ -206,28 +206,28 @@ graph TD
 
 ## Global Components
 
-### Floating Capsule Navbar
+### Floating Navigation Bar
 
 | Thuộc tính | Mô tả |
 |------------|--------|
-| **Vị trí** | Fixed bottom, floating 16px above edge |
-| **Style** | Capsule shape (border-radius 32px), glassmorphism blur, thin border |
+| **Vị trí** | Fixed bottom, edge-to-edge |
+| **Style** | Minimal glassmorphism — blur backdrop, subtle top border, no capsule |
 | **Tabs** | 5 icons — có label bên dưới |
 
 **5 Tabs:**
 
 | # | Label | Icon | Đặc biệt |
 |---|-------|------|-----------|
-| 1 | Home | 🏠 outline | — |
-| 2 | Sounds | 🔊 outline | — |
-| 3 | Breathwork | 🫁 outline | **Center elevated** — icon lớn hơn, circle background Neon Cyan |
-| 4 | Library | 📚 outline | — |
-| 5 | Settings | ⚙️ outline | — |
+| 1 | Home | 🏠 outline/fill | — |
+| 2 | Sounds | 🔊 outline/fill | — |
+| 3 | Breathwork | 🫁 outline/fill | — |
+| 4 | Library | 📚 outline/fill | — |
+| 5 | Settings | ⚙️ outline/fill | — |
 
 **Interactions:**
-- Tap → chuyển tab (giữ state mỗi tab via `StatefulShellRoute`)
-- Active tab: icon fill + Neon Cyan color
-- Inactive: icon outline + text secondary color
+- Tap → chuyển tab (giữ state mỗi tab via `IndexedStack`)
+- Active tab: icon fill + Neon Cyan color + bold label
+- Inactive: icon outline + muted 50% opacity
 
 ---
 

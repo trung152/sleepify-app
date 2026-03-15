@@ -1,0 +1,52 @@
+{
+  "@@locale": "vi",
+
+  "appName": "Sleepify",
+  "appTagline": "Giấc Ngủ Sang Trọng & Luyện Thở",
+
+  "splashLoading": "Đang chuẩn bị trải nghiệm giấc ngủ...",
+
+  "selectLanguage": "Chọn Ngôn Ngữ",
+  "languageContinue": "Tiếp tục",
+
+  "onboardingGoalTitle": "Mục tiêu chính của bạn hôm nay?",
+  "onboardingGoalSubtitle": "Chia sẻ mong muốn để chúng tôi cá nhân hóa trải nghiệm",
+  "goalSleep": "Ngủ ngon",
+  "goalRelax": "Thư giãn",
+  "goalFocus": "Tập trung",
+  "goalBreathe": "Luyện thở",
+
+  "onboardingBedtimeTitle": "Bạn thường đi ngủ lúc mấy giờ?",
+  "onboardingBedtimeSubtitle": "Thông tin này giúp cá nhân hóa trải nghiệm",
+  "bedtime9to10": "9 giờ tối - 10 giờ tối",
+  "bedtime10to12": "10 giờ tối - 12 giờ đêm",
+  "bedtime12to2": "12 giờ đêm - 2 giờ sáng",
+  "bedtimeAfter2": "Sau 2 giờ sáng",
+
+  "onboardingSleepHoursTitle": "Bạn cần ngủ bao nhiêu giờ?",
+  "onboardingSleepHoursSubtitle": "Chúng tôi sẽ dùng thông tin này để tùy chỉnh cho bạn",
+
+  "onboardingNotificationTitle": "Nhận thông báo để ngủ ngon hơn",
+  "onboardingNotificationSubtitle": "Bật để đặt lịch ngủ, bạn sẽ không bỏ lỡ giờ đi ngủ hoàn hảo.",
+  "enableNotifications": "Bật Thông Báo",
+  "skipForNow": "Để sau",
+
+  "continueButton": "Tiếp tục",
+  "backButton": "Quay lại",
+
+  "homeGreetingMorning": "Chào Buổi Sáng",
+  "homeGreetingAfternoon": "Chào Buổi Chiều",
+  "homeGreetingEvening": "Chào Buổi Tối",
+
+  "soundsTitle": "Âm Thanh Thư Giãn",
+  "breathworkTitle": "Luyện Thở",
+  "libraryTitle": "Thư Viện",
+  "settingsTitle": "Cài Đặt",
+  "premiumTitle": "Nâng Cấp",
+
+  "tabHome": "Trang Chủ",
+  "tabSounds": "Âm Thanh",
+  "tabBreathwork": "Luyện Thở",
+  "tabLibrary": "Thư Viện",
+  "tabSettings": "Cài Đặt"
+}

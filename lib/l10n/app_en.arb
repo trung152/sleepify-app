@@ -1,0 +1,52 @@
+{
+  "@@locale": "en",
+
+  "appName": "Sleepify",
+  "appTagline": "Luxury Sleep & Breathwork",
+
+  "splashLoading": "Preparing your sleep experience...",
+
+  "selectLanguage": "Select Language",
+  "languageContinue": "Continue",
+
+  "onboardingGoalTitle": "What is your main goal today?",
+  "onboardingGoalSubtitle": "Tell us your aspiration for better well-being",
+  "goalSleep": "Sleep",
+  "goalRelax": "Relax",
+  "goalFocus": "Focus",
+  "goalBreathe": "Breathe",
+
+  "onboardingBedtimeTitle": "When do you usually sleep?",
+  "onboardingBedtimeSubtitle": "This helps us personalize your experience",
+  "bedtime9to10": "9 PM - 10 PM",
+  "bedtime10to12": "10 PM - 12 AM",
+  "bedtime12to2": "12 AM - 2 AM",
+  "bedtimeAfter2": "After 2 AM",
+
+  "onboardingSleepHoursTitle": "How many hours of sleep do you need?",
+  "onboardingSleepHoursSubtitle": "We'll use this to personalize your preferences",
+
+  "onboardingNotificationTitle": "Get notified for better rest",
+  "onboardingNotificationSubtitle": "Enable this to set your sleep schedule, so you don't miss your perfect bedtime.",
+  "enableNotifications": "Enable Notifications",
+  "skipForNow": "I'll do it later",
+
+  "continueButton": "Continue",
+  "backButton": "Back",
+
+  "homeGreetingMorning": "Good Morning",
+  "homeGreetingAfternoon": "Good Afternoon",
+  "homeGreetingEvening": "Good Evening",
+
+  "soundsTitle": "Relaxing Sounds",
+  "breathworkTitle": "Breathwork",
+  "libraryTitle": "My Library",
+  "settingsTitle": "Settings",
+  "premiumTitle": "Premium",
+
+  "tabHome": "Home",
+  "tabSounds": "Sounds",
+  "tabBreathwork": "Breathwork",
+  "tabLibrary": "Library",
+  "tabSettings": "Settings"
+}

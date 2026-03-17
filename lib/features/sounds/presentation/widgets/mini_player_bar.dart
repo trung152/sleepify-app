@@ -37,9 +37,7 @@ class MiniPlayerBar extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xFF1A2332),
             borderRadius: BorderRadius.circular(28),
-            border: Border.all(
-              color: AppColors.surface.withValues(alpha: 0.1),
-            ),
+            border: Border.all(color: AppColors.surface.withValues(alpha: 0.1)),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.3),
@@ -107,9 +105,7 @@ class MiniPlayerBar extends StatelessWidget {
                     color: AppColors.accent,
                   ),
                   child: Icon(
-                    isPlaying
-                        ? Icons.pause_rounded
-                        : Icons.play_arrow_rounded,
+                    isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
                     color: AppColors.background,
                     size: 18,
                   ),

@@ -7,6 +7,7 @@ environment:
   sdk: ^3.11.1
 
 dependencies:
+  audio_service: ^0.18.18
   flutter:
     sdk: flutter
   flutter_localizations:
@@ -17,6 +18,8 @@ dependencies:
   google_fonts: ^8.0.2
   intl: ^0.20.2
   json_annotation: ^4.11.0
+  just_audio: ^0.10.5
+  just_audio_background: ^0.0.1-beta.17
   riverpod_annotation: ^4.0.2
   shared_preferences: ^2.5.4
 

@@ -1,10 +1,10 @@
 # Sleepify — Current Context
 
-> Cập nhật: 2026-03-16T00:52 (Session 3)
+> Cập nhật: 2026-03-18T00:21 (Session 4)
 
 ## Phase hiện tại
 
-**Phase 3: Audio Features — Sounds, Player, Sleep Timer**
+**Phase 3: Audio Features — Sounds, Player, Sleep Timer, Library**
 
 ## Tiến độ
 
@@ -41,20 +41,33 @@
 - **FloatingNavBar** — minimal edge-to-edge, blur backdrop, 5 tabs
 - **MainShell** — IndexedStack for tab state preservation + MiniPlayerBar integration
 
-#### Sounds & Player (Session 3 — NEW)
+#### Sounds & Player
 - **SoundsScreen** — Grid layout, SoundCircle widgets, active glow + volume ring
 - **MiniPlayerBar** — Compact player bar, play/pause, tap-to-expand
 - **CurrentMixScreen** — Full screen player (slide-up from MiniPlayerBar)
   - Sound list with volume sliders, icon circles, percentage labels
-  - CLEAR ALL MIX button, bookmark/save header
+  - CLEAR ALL MIX button, bookmark/save header (wired to SaveMixBottomSheet)
   - Controls bar: Timer / Play-Pause (cyan glow) / Add Sound
-- **CurrentMixSheet** — DraggableScrollableSheet (also created, user's backup)
 - **SleepTimerScreen** — Full screen (slide-up from CurrentMixScreen timer button)
   - Scroll-wheel time picker (HOURS : MINUTES), large numbers (48px)
   - Ending Sound setting (default: None, dropdown style)
   - Fade Out stepper (1-60 Sec, subtitle "Length sounds will fade out")
   - Vibration toggle with description
   - START TIMER button with cyan glow
+
+#### Library (Session 4 — NEW ✅)
+- **SavedMix model** — @freezed (sealed class), id/name/sounds/volumes/createdAt
+- **LibraryRepository** — abstract interface (getAllMixes, saveMix, deleteMix)
+- **LibraryLocalSource** — SharedPreferences JSON persistence
+- **LibraryRepositoryImpl** — delegates to local source
+- **LibraryNotifier** — @riverpod AsyncNotifier (save, delete, loadMix → ActiveSoundsProvider)
+- **SaveMixBottomSheet** — blurred bottom sheet, name input, cyan save button, cancel
+- **SavedMixCard** — glassmorphism card, circular icon, name, sound list, play/delete
+- **LibraryScreen** — segmented tabs (Favorites placeholder / My Mixes list)
+  - My Mixes: saved mix cards + "Create New Mix" card
+  - Delete confirmation dialog
+  - Play → loads mix into ActiveSoundsProvider
+- **MainShell** — Library placeholder replaced with real LibraryScreen
 
 ### 🔧 Đang làm (In Progress)
 
@@ -68,7 +81,6 @@
 | Feature | Priority | Notes |
 |---------|----------|-------|
 | Breathwork Screen | MEDIUM | Visualizer, breathing patterns |
-| Library Screen | LOW | Saved mixes |
 | Settings Screen | LOW | Settings items |
 | Premium Screen | LOW | UI-only paywall |
 
@@ -82,22 +94,32 @@
 - **CurrentMixScreen**: Full screen (PageRouteBuilder slide-up), NOT DraggableScrollableSheet
 - **SleepTimerScreen**: Full screen (PageRouteBuilder slide-up), NOT dialog/modal
 - **Config dir**: `.agents/` (migrated from `.gemini/`)
+- **Freezed 3.x**: Use `sealed class` (not `class`) for freezed models — mixin generates abstract members
+- **Riverpod 3.x naming**: Generator strips `Notifier` suffix → `LibraryNotifier` generates `libraryProvider`
+- **Riverpod 3.x Ref**: Use `Ref` (not legacy `LibraryRepositoryRef`) for functional providers
 
-## Session 3 — Key Decisions
+## Session 4 — Key Decisions
 
-1. **CurrentMixSheet → CurrentMixScreen**: User preferred full-screen player over bottom sheet, slide-up animation via PageRouteBuilder
-2. **SleepTimerModal → SleepTimerScreen**: User preferred full-screen over centered dialog, with scroll-wheel time picker from Stitch design
-3. **Fade Out unit**: Changed from minutes to seconds (matching Stitch design)
-4. **Ending Sound default**: "None" instead of "Rain Forest"
+1. **Library feature**: Full MVVM architecture (domain/data/presentation layers)
+2. **SavedMix persistence**: SharedPreferences with JSON serialization (simple, no Hive/Isar needed)
+3. **SavedMix model**: `sealed class` for Freezed 3.x compatibility
+4. **Save flow**: CurrentMixScreen bookmark → SaveMixBottomSheet → LibraryNotifier → SharedPreferences
+5. **Load flow**: LibraryScreen play → LibraryNotifier.loadMix → clearAll + toggleSound + setVolume
+
+## Session 4 — Bugs Fixed
+
+1. **`libraryNotifierProvider` undefined**: Riverpod generates `libraryProvider` (strips Notifier suffix) — fixed in 4 files
+2. **`LibraryRepositoryRef` undefined**: Riverpod 3.x uses `Ref` — fixed in library_notifier.dart
+3. **`_$SavedMix` missing implementations**: Freezed 3.x generates mixin, needs `sealed class` — fixed
 
 ## Next Session — Gợi ý
 
 1. **`just_audio` integration** — actual audio playback cho SoundsScreen + CurrentMixScreen
 2. **Sleep Timer logic** — countdown timer, fade out audio, device lock
 3. **Breathwork Screen** — breathing visualizer, patterns
-4. **Library Screen** — saved mixes, bookmarks
+4. **Settings Screen** — settings items
 
 ## Blockers / Issues
 
-- Warning: `_SettingTile.onTap` parameter unused (minor, can keep for future use)
 - Cần integrate `just_audio` + `audio_service` cho actual playback
+- Favorites tab trong Library chưa có logic (placeholder)

@@ -445,38 +445,77 @@ Sound {
 
 ---
 
-## Flow 5 — Library
+## Flow 5 — Library ✅ IMPLEMENTED
 
-### Screen 11: Library Screen
+### Screen 9c: Save Mix Bottom Sheet
+
+| Thuộc tính | Mô tả |
+|------------|--------|
+| **Trigger** | Bookmark icon trên CurrentMixScreen header |
+| **Style** | Modal bottom sheet, glassmorphism blur, dark container |
+| **Stitch ID** | `51013c45c11a4e07b08665ece3221841` |
+
+**UI Elements:**
+- Drag handle (top center bar)
+- Title: "Save Your Mix" (bold, white, 22px)
+- "MIX NAME" label (uppercase, gray, 11px, letter-spacing)
+- Text field (dark container, rounded 16px, pencil icon suffix)
+  - Auto-focus, default name = first 3 sound labels joined
+- "Save Mix" button (full-width, cyan pill, 52px height)
+- "Cancel" text button (muted gray)
+
+**Interactions:**
+- Type mix name → tap "Save Mix" → persist to SharedPreferences → snackbar
+- Tap "Cancel" or drag down → dismiss without saving
+- Press Enter → save
+
+### Screen 11: Library Screen ✅ IMPLEMENTED
 
 | Thuộc tính | Mô tả |
 |------------|--------|
 | **Route** | `/library` (tab 4) |
 | **Mục đích** | Saved mixes & bookmarked content |
-| **Layout** | Tab bar + list |
+| **Layout** | Header + segmented tabs + list |
+| **Stitch IDs** | `6bdcf51b1fbb4ab2b21fc8f64ce26073`, `0b63526ee32344bc9ddf3efc6df269bb` |
 
 **UI Elements:**
 
 **a. Top:**
-- Title: "My Library"
-- Tab bar: **Saved** | **Mix** (hoặc Favorites | My Mixes)
+- Title: "Library" (bold, 28px, gradient background)
+- Segmented tab control: **Favorites** | **My Mixes** (cyan active highlight, animated)
 
-**b. Content list** — mỗi item:
-- Thumbnail (album art style, rounded square)
-- Tên mix
-- Metadata: "X sounds · created date"
-- Play button (right side)
-- Duration badge
+**b. My Mixes tab** — saved mix card list:
+- Glassmorphism card per mix (ClipRRect + BackdropFilter)
+  - Circular icon (gradient background, icon based on first sound)
+  - Mix name (15px, bold, white)
+  - Sound names (12px, muted gray, comma-separated)
+  - Delete button (trash icon, with confirmation dialog)
+  - Play button (circular, cyan tint)
+- "Create New Mix" card at bottom (accent border, + icon)
 
-**c. Empty state:**
-- Illustration + "No saved mixes yet"
-- CTA: "Browse Sounds"
+**c. Favorites tab:**
+- Empty state: heart icon + "No favorites yet" + subtitle
+
+**d. Empty state (My Mixes):**
+- Library icon + "No mixes saved" + subtitle
+
+**Data model:**
+```
+SavedMix (@freezed) {
+  id: String (timestamp-based)
+  name: String
+  sounds: Map<String, String> (id → label)
+  volumes: Map<String, double> (id → volume)
+  createdAt: DateTime
+}
+```
+
+**Persistence:** SharedPreferences, JSON-serialized string list
 
 **Interactions:**
-- Tap item → play mix (load sounds, start playback)
-- Swipe left → Delete option
-- Long press → Edit mix name
-- Tap Play button → immediate playback
+- Tap Play → load mix into ActiveSoundsProvider (clear + toggle each sound + set volumes)
+- Tap Delete → confirmation dialog → remove from storage
+- Tap "Create New Mix" → snackbar hint to go to Sounds tab
 
 ---
 

@@ -147,7 +147,7 @@ class SoundsScreen extends ConsumerWidget {
                     crossAxisCount: 3,
                     crossAxisSpacing: 20,
                     mainAxisSpacing: 20,
-                    childAspectRatio: 0.85,
+                    childAspectRatio: 0.80,
                   ),
                   itemBuilder: (context, index) {
                     final sound = _sounds[index];

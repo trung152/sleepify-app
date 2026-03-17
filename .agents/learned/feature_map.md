@@ -8,10 +8,10 @@
 | `home` | HomeScreen | Lời chào, Mood Chips, Hero Section, Top 5 Ranked, Relaxing/Nature sections | ✅ Done |
 | `shell` | MainShell | Tab navigation via IndexedStack + FloatingNavBar | ✅ Done |
 | `sounds` | SoundsScreen | Grid âm thanh, Active Glow, Volume Ring | ✅ Done |
-| `player` | MiniPlayerBar, CurrentMixScreen | Play/Pause/Stop, mix management, volume per sound | 🔧 In Progress |
+| `player` | MiniPlayerBar, CurrentMixScreen | Play/Pause/Stop, mix management, volume per sound, save mix | 🔧 In Progress |
 | `breathwork` | BreathworkScreen | Visualizer, instructions (Inhale/Hold/Exhale), timer | ⬜ Not started |
 | `sleep_timer` | SleepTimerScreen | Scroll-wheel picker (HH:MM), ending sound, fade out, vibration | 🔧 In Progress |
-| `library` | LibraryScreen | Saved mixes, bookmarked content | ⬜ Not started |
+| `library` | LibraryScreen, SaveMixBottomSheet, SavedMixCard | Saved mixes (CRUD), load mix to player, Favorites/My Mixes tabs | ✅ Done |
 | `settings` | SettingsScreen, LanguageScreen | Notifications, language, support, about | ⬜ Not started |
 | `premium` | PremiumScreen | Paywall, features preview, 7-day trial CTA | ⬜ Not started |
 

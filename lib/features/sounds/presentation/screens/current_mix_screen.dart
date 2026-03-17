@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/providers/active_sounds_provider.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../library/presentation/providers/library_notifier.dart';
+import '../../../library/presentation/widgets/save_mix_bottom_sheet.dart';
 import 'sleep_timer_screen.dart';
 
 /// Current Mix — Full screen player.
@@ -46,11 +48,6 @@ class CurrentMixScreen extends ConsumerStatefulWidget {
 }
 
 class _CurrentMixScreenState extends ConsumerState<CurrentMixScreen> {
-  // Local volume map (0.0 – 1.0) per sound ID
-  final Map<String, double> _volumes = {};
-
-  double _getVolume(String id) => _volumes[id] ?? 0.8;
-
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(activeSoundsProvider);
@@ -85,9 +82,7 @@ class _CurrentMixScreenState extends ConsumerState<CurrentMixScreen> {
                   // Save / Bookmark button
                   _HeaderIconButton(
                     icon: Icons.bookmark_border_rounded,
-                    onTap: () {
-                      // TODO: save current mix
-                    },
+                    onTap: () => _showSaveMixSheet(context, ref),
                   ),
                 ],
               ),
@@ -108,9 +103,11 @@ class _CurrentMixScreenState extends ConsumerState<CurrentMixScreen> {
                             child: _SoundRow(
                               id: entry.key,
                               label: entry.value,
-                              volume: _getVolume(entry.key),
+                              volume: state.getVolume(entry.key),
                               onVolumeChanged: (v) {
-                                setState(() => _volumes[entry.key] = v);
+                                ref
+                                    .read(activeSoundsProvider.notifier)
+                                    .setVolume(entry.key, v);
                               },
                               onRemove: () {
                                 ref
@@ -202,6 +199,44 @@ class _CurrentMixScreenState extends ConsumerState<CurrentMixScreen> {
     );
   }
 
+  void _showSaveMixSheet(BuildContext context, WidgetRef ref) {
+    final state = ref.read(activeSoundsProvider);
+    if (!state.hasActiveSounds) return;
+
+    // Suggest a name from the sound labels
+    final defaultName = state.labels.take(3).join(', ');
+
+    SaveMixBottomSheet.show(
+      context,
+      defaultName: defaultName,
+      onSave: (name) async {
+        final saved = await ref
+            .read(libraryProvider.notifier)
+            .saveMix(
+              name: name,
+              sounds: state.activeSounds,
+              volumes: state.volumes,
+            );
+
+        if (saved && context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Mix "$name" saved to Library!',
+                style: GoogleFonts.manrope(),
+              ),
+              backgroundColor: const Color(0xFF1A2332),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+
   Widget _buildClearAllButton() {
     return Padding(
       padding: const EdgeInsets.only(top: 16, bottom: 8),
@@ -263,7 +298,9 @@ class _HeaderIconButton extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Sound row: icon + name + percentage + slider + remove
+// Sound row: Stitch "Refined Item Style"
+// Top row: icon + name + percentage + close
+// Bottom: full-width gradient slider (cyan → purple)
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _SoundRow extends StatelessWidget {
@@ -303,92 +340,170 @@ class _SoundRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final pct = (volume * 100).round();
 
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Icon circle
-        Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColors.accent.withValues(alpha: 0.12),
-          ),
-          child: Icon(_iconFor(id), size: 24, color: AppColors.accent),
-        ),
-        const SizedBox(width: 14),
-
-        // Name + slider
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Title row with percentage
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      label,
-                      style: GoogleFonts.manrope(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    '$pct%',
-                    style: GoogleFonts.manrope(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.accent,
-                    ),
-                  ),
-                ],
+        // ── Top row: icon + name + pct + close ──
+        Row(
+          children: [
+            // Compact icon circle (dark teal bg)
+            Container(
+              width: 44,
+              height: 44,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color(0xFF0D2424),
               ),
-              const SizedBox(height: 6),
-              // Volume slider
-              SliderTheme(
-                data: SliderThemeData(
-                  trackHeight: 4,
-                  thumbShape: const RoundSliderThumbShape(
-                    enabledThumbRadius: 0,
-                  ),
-                  overlayShape: const RoundSliderOverlayShape(
-                    overlayRadius: 12,
-                  ),
-                  activeTrackColor: AppColors.accent,
-                  inactiveTrackColor: AppColors.surface.withValues(alpha: 0.1),
-                  thumbColor: Colors.transparent,
-                  overlayColor: AppColors.accent.withValues(alpha: 0.15),
-                  trackShape: const RoundedRectSliderTrackShape(),
+              child: Icon(_iconFor(id), size: 22, color: AppColors.accent),
+            ),
+            const SizedBox(width: 12),
+
+            // Sound name
+            Expanded(
+              child: Text(
+                label,
+                style: GoogleFonts.manrope(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
                 ),
-                child: Slider(value: volume, onChanged: onVolumeChanged),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(width: 4),
-
-        // Remove button — larger tap target
-        GestureDetector(
-          onTap: onRemove,
-          behavior: HitTestBehavior.opaque,
-          child: SizedBox(
-            width: 36,
-            height: 36,
-            child: Center(
-              child: Icon(
-                Icons.close_rounded,
-                size: 20,
-                color: AppColors.textSecondary.withValues(alpha: 0.5),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
+
+            // Volume percentage
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: Text(
+                '$pct%',
+                style: GoogleFonts.manrope(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.textSecondary.withValues(alpha: 0.6),
+                ),
+              ),
+            ),
+
+            // Close / remove button
+            GestureDetector(
+              onTap: onRemove,
+              behavior: HitTestBehavior.opaque,
+              child: SizedBox(
+                width: 32,
+                height: 32,
+                child: Center(
+                  child: Icon(
+                    Icons.close_rounded,
+                    size: 18,
+                    color: AppColors.textSecondary.withValues(alpha: 0.45),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+
+        // ── Full-width gradient slider ──
+        SliderTheme(
+          data: SliderThemeData(
+            trackHeight: 3,
+            trackShape: _GradientSliderTrackShape(
+              activeGradient: const LinearGradient(
+                colors: [Color(0xFF00E5FF), Color(0xFFB06AB3)],
+              ),
+              inactiveColor: AppColors.surface.withValues(alpha: 0.08),
+            ),
+            thumbShape: const RoundSliderThumbShape(
+              enabledThumbRadius: 6,
+              elevation: 2,
+              pressedElevation: 4,
+            ),
+            overlayShape: const RoundSliderOverlayShape(overlayRadius: 16),
+            thumbColor: Colors.white,
+            overlayColor: Colors.white.withValues(alpha: 0.12),
+            // Active/inactive colors are handled by custom track shape
+            activeTrackColor: AppColors.accent,
+            inactiveTrackColor: Colors.transparent,
           ),
+          child: Slider(value: volume, onChanged: onVolumeChanged),
         ),
       ],
     );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Custom slider track that paints a gradient on the active portion
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _GradientSliderTrackShape extends SliderTrackShape {
+  const _GradientSliderTrackShape({
+    required this.activeGradient,
+    required this.inactiveColor,
+  });
+
+  final LinearGradient activeGradient;
+  final Color inactiveColor;
+
+  @override
+  Rect getPreferredRect({
+    required RenderBox parentBox,
+    Offset offset = Offset.zero,
+    required SliderThemeData sliderTheme,
+    bool isEnabled = false,
+    bool isDiscrete = false,
+  }) {
+    final double trackHeight = sliderTheme.trackHeight ?? 3;
+    final double trackLeft = offset.dx + 8;
+    final double trackTop =
+        offset.dy + (parentBox.size.height - trackHeight) / 2;
+    final double trackWidth = parentBox.size.width - 16;
+    return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
+  }
+
+  @override
+  void paint(
+    PaintingContext context,
+    Offset offset, {
+    required RenderBox parentBox,
+    required SliderThemeData sliderTheme,
+    required Animation<double> enableAnimation,
+    required Offset thumbCenter,
+    Offset? secondaryOffset,
+    bool isEnabled = false,
+    bool isDiscrete = false,
+    required TextDirection textDirection,
+  }) {
+    final Rect trackRect = getPreferredRect(
+      parentBox: parentBox,
+      offset: offset,
+      sliderTheme: sliderTheme,
+    );
+    final double radius = trackRect.height / 2;
+
+    // ── Inactive track (full width, behind) ──
+    final inactivePaint = Paint()..color = inactiveColor;
+    context.canvas.drawRRect(
+      RRect.fromRectAndRadius(trackRect, Radius.circular(radius)),
+      inactivePaint,
+    );
+
+    // ── Active track (gradient, up to thumb) ──
+    final activeRect = Rect.fromLTRB(
+      trackRect.left,
+      trackRect.top,
+      thumbCenter.dx,
+      trackRect.bottom,
+    );
+
+    if (activeRect.width > 0) {
+      final gradientPaint = Paint()
+        ..shader = activeGradient.createShader(activeRect);
+      context.canvas.drawRRect(
+        RRect.fromRectAndRadius(activeRect, Radius.circular(radius)),
+        gradientPaint,
+      );
+    }
   }
 }
 

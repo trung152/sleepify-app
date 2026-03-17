@@ -8,6 +8,8 @@ import '../../../home/presentation/screens/home_screen.dart';
 import '../../../sounds/presentation/screens/sounds_screen.dart';
 import '../../../sounds/presentation/widgets/mini_player_bar.dart';
 import '../../../sounds/presentation/screens/current_mix_screen.dart';
+import '../../../breathwork/presentation/screens/breathwork_screen.dart';
+import '../../../library/presentation/screens/library_screen.dart';
 
 /// Main app shell with floating navbar + global mini player.
 ///
@@ -27,8 +29,8 @@ class _MainShellState extends ConsumerState<MainShell> {
   final List<Widget> _screens = const [
     HomeScreen(),
     SoundsScreen(),
-    _PlaceholderScreen(title: 'Breathwork', icon: Icons.air),
-    _PlaceholderScreen(title: 'Library', icon: Icons.bookmark),
+    BreathworkScreen(),
+    LibraryScreen(),
     _PlaceholderScreen(title: 'Settings', icon: Icons.settings),
   ];
 
